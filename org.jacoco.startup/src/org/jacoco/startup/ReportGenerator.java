@@ -22,6 +22,7 @@ import org.eclipse.jgit.util.StringUtils;
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IBundleCoverage;
+import org.jacoco.core.internal.diff.GitAdapter;
 import org.jacoco.core.tools.ExecFileLoader;
 import org.jacoco.report.DirectorySourceFileLocator;
 import org.jacoco.report.FileMultiReportOutput;
@@ -125,6 +126,9 @@ public class ReportGenerator {
             String tag,
             String compareTag,
             File[] classDirs) throws IOException {
+        //git 授权登录
+        GitAdapter.setCredentialsProvider("yaoxianwei", "RONGSHAN-2020");
+
         CoverageBuilder coverageBuilder = null;
         if (StringUtils.isEmptyOrNull(tag)) {
             if (StringUtils.isEmptyOrNull(compareBranch)) {
@@ -178,6 +182,8 @@ public class ReportGenerator {
             CommandLine commandLine = parseCmmandLine(args);
             String execFile;
             String reportDir = commandLine.getOptionValue(REPORT_DIR);
+
+            /*  干掉dump代码，通过平台先dump好，再生成差异覆盖率报告
             if (!commandLine.hasOption(EXEC_DIR)) {
                 execFile = reportDir.endsWith("/") ? reportDir + "exec/sq_jacoco.exec" :
                         reportDir + "/exec/sq_jacoco.exec";
@@ -192,6 +198,10 @@ public class ReportGenerator {
                     commandLine.getOptionValue(REMOTE_HOST),
                     Integer.parseInt(commandLine.getOptionValue(REMOTE_PORT)));
             client.dump();
+            */
+            // --exec-dir 直接传exec文件全路径
+            String execDir = commandLine.getOptionValue(EXEC_DIR);
+            execFile = execDir;
 
             //生成报告
             String branch = commandLine.getOptionValue(BRANCH);
@@ -212,10 +222,12 @@ public class ReportGenerator {
             for (int i = 0; i < sourceDirs.length; ++i) {
                 sourceDirFiles[i] = new File(sourceDirs[i]);
             }
-            String mysqlJdbcUrl = commandLine.getOptionValue(MYSQL_JDBC_URL);
-            String userName = commandLine.getOptionValue(MYSQL_USER);
-            String password = commandLine.getOptionValue(MYSQL_PASSWORD);
-            CoverageBuilder.init(mysqlJdbcUrl, userName, password, title);
+//            String mysqlJdbcUrl = commandLine.getOptionValue(MYSQL_JDBC_URL);
+//            String userName = commandLine.getOptionValue(MYSQL_USER);
+//            String password = commandLine.getOptionValue(MYSQL_PASSWORD);
+
+            // 注释掉，不落库
+            // CoverageBuilder.init(mysqlJdbcUrl, userName, password, title);
             create(title, new File(execFile),
                     new File(reportDir),
                     sourceDirFiles,

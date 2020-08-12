@@ -1,3 +1,17 @@
+**基于原作的repo做了如下改动：**
+
+1.org.jacoco.startup.ReportGenerator
+
+    1)第32行，增加git登录授权代码
+    2)第186-204行，去除dump代码。exec文件自行用命令行生成
+    3)第225-230行，注释数据落库代码。不与db交互
+
+2.org.jacoco.core.internal.diff
+    
+    1)第105行改用重载函数，解决错误 Duplicate key org.jacoco.core.internal.diff.MethodInfo
+
+===============================修改End=========================================
+
 JaCoCo Java Code Coverage Library
 =================================
 
