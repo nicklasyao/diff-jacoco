@@ -156,6 +156,27 @@ public class Analyzer {
 		analyzeClass(buffer, location);
 	}
 
+	/**
+	 *  add by danny.yao 2020/08/13，只分析有变化的代码
+	 * @param file
+	 * 		classes 路径
+	 * @throws IOException
+	 */
+	public void analyzeClass(final File file) throws IOException {
+		if (file.isDirectory()) {
+			for (final File f : file.listFiles()) {
+				analyzeClass(f);
+			}
+		} else {
+			final InputStream in = new FileInputStream(file);
+			try {
+				analyzeClass(in, file.getPath());
+			} finally {
+				in.close();
+			}
+		}
+	}
+
 	private IOException analyzerError(final String location,
 			final Exception cause) {
 		final IOException ex = new IOException(

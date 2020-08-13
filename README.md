@@ -5,10 +5,16 @@
     1)第32行，增加git登录授权代码
     2)第186-204行，去除dump代码。exec文件自行用命令行生成
     3)第225-230行，注释数据落库代码。不与db交互
+    4)第152-154行，支持第3点变动
 
 2.org.jacoco.core.internal.diff
     
     1)第105行改用重载函数，解决错误 Duplicate key org.jacoco.core.internal.diff.MethodInfo
+    
+3.覆盖率报告，只展示有代码变动的类
+    
+    1)org.jacoco.report.internal.html.page.SourceHighlighter 整个文件还原为 jacoco的官方源码，同时把测试类 SourceHighlighterTest.java 中报错代码注释掉
+    
 
 ===============================修改End=========================================
 

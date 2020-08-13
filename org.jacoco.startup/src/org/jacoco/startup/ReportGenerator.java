@@ -127,7 +127,7 @@ public class ReportGenerator {
             String compareTag,
             File[] classDirs) throws IOException {
         //git 授权登录
-        GitAdapter.setCredentialsProvider("yaoxianwei", "RONGSHAN-2020");
+        GitAdapter.setCredentialsProvider("test", "test-2020");
 
         CoverageBuilder coverageBuilder = null;
         if (StringUtils.isEmptyOrNull(tag)) {
@@ -149,7 +149,9 @@ public class ReportGenerator {
         final Analyzer analyzer = new Analyzer(
                 execFileLoader.getExecutionDataStore(), coverageBuilder);
         for (File classDir : classDirs) {
-            analyzer.analyzeAll(classDir);
+            // analyzer.analyzeAll(classDir);
+            // 只分析有变动的代码
+            analyzer.analyzeClass(classDir);
         }
         return coverageBuilder.getBundle(title);
     }
