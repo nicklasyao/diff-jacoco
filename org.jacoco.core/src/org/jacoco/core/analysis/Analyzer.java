@@ -168,11 +168,16 @@ public class Analyzer {
 				analyzeClass(f);
 			}
 		} else {
-			final InputStream in = new FileInputStream(file);
-			try {
-				analyzeClass(in, file.getPath());
-			} finally {
-				in.close();
+			String fileName = file.getName();
+			String preFix = fileName.substring(fileName.lastIndexOf(".") + 1);
+			// 只分析class文件
+			if ("class".equals(preFix)) {
+				final InputStream in = new FileInputStream(file);
+				try {
+					analyzeClass(in, file.getPath());
+				} finally {
+					in.close();
+				}
 			}
 		}
 	}
